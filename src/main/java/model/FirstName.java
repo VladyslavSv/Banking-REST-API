@@ -1,20 +1,20 @@
 package model;
 
-import javax.annotation.Generated;
+
 import javax.persistence.*;
 
 @Entity
-@Table(name="transactionType")
-public class TransactionType
+@Table(name="firstName")
+public class FirstName
 {
-    public TransactionType(){}
+    public FirstName(){}
 
-    public TransactionType(String name) {
+    public FirstName(String name) {
         this.name = name;
     }
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy=GenerationType.IDENTITY)
     private int id;
 
     private String name;
