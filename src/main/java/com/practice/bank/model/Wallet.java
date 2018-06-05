@@ -1,4 +1,4 @@
-package model;
+package com.practice.bank.model;
 
 import org.hibernate.annotations.Cascade;
 

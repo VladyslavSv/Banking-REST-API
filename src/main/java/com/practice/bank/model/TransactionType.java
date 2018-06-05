@@ -1,6 +1,5 @@
-package model;
+package com.practice.bank.model;
 
-import javax.annotation.Generated;
 import javax.persistence.*;
 
 @Entity
