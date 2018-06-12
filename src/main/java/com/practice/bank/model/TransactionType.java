@@ -3,7 +3,6 @@ package com.practice.bank.model;
 import javax.persistence.*;
 
 @Entity
-@Table(name="transactionType")
 public class TransactionType
 {
     public TransactionType(){}
@@ -14,15 +13,15 @@ public class TransactionType
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+    private Long id;
 
     private String name;
 
-    public int getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Long id) {
         this.id = id;
     }
 

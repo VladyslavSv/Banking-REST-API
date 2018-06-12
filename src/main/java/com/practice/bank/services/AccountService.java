@@ -22,7 +22,7 @@ public class AccountService
     {
         accountRepository.deleteById(id);
     }
-    public void editById(Account account)
+    public void editAccount(Account account)
     {
         accountRepository.save(account);
     }

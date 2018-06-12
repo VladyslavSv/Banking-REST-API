@@ -7,7 +7,6 @@ import java.math.BigDecimal;
 import java.util.Set;
 
 @Entity
-@Table(name="wallet")
 public class Wallet
 {
     public Wallet(){}
@@ -21,7 +20,7 @@ public class Wallet
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+    private Long id;
 
     @ManyToOne
     @JoinColumn(name="account_id")
@@ -34,14 +33,11 @@ public class Wallet
     @JoinColumn(name="currency_id")
     private Currency currency;
 
-    @OneToMany(mappedBy = "id")
-    private Set<ATMTransaction> atmTransactions;
-
-    public int getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Long id) {
         this.id = id;
     }
 

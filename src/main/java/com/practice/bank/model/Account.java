@@ -1,10 +1,10 @@
 package com.practice.bank.model;
 
 import javax.persistence.*;
+import javax.validation.constraints.Email;
 import java.util.Set;
 
 @Entity
-@Table(name = "account")
 public class Account
 {
     public Account(){}
@@ -21,7 +21,7 @@ public class Account
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+    private Long id;
 
     @ManyToOne
     @JoinColumn(name="firstName_id")
@@ -29,6 +29,7 @@ public class Account
 
     private String lastName;
 
+    @Email
     private String email;
 
     private String code;
@@ -40,11 +41,11 @@ public class Account
     @OneToMany(mappedBy = "id",cascade = CascadeType.ALL)
     private Set<Wallet> wallets;
 
-    public int getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
@@ -108,5 +109,13 @@ public class Account
                 ", login='" + login + '\'' +
                 ", password='" + password + '\'' +
                 '}';
+    }
+
+    public Set<Wallet> getWallets() {
+        return wallets;
+    }
+
+    public void setWallets(Set<Wallet> wallets) {
+        this.wallets = wallets;
     }
 }
