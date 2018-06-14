@@ -24,11 +24,18 @@ public class AccountController
     @Autowired
     private FirstNameService firstNameService;
 
-    @GetMapping(value="/test")
-    public TransactionType test()
-    {
-        return null;
-    }
+    @Autowired
+    private TransactionTypeService transactionTypeService;
+//    @GetMapping(value="/test")
+//    public TransactionType test()
+//    {
+//        TransactionType type1=new TransactionType("Withdraw");
+//        TransactionType type2=new TransactionType("Reliff");
+//
+//        transactionTypeService.addTransactionType(type1);
+//        transactionTypeService.addTransactionType(type2);
+//        return type1;
+//    }
 
     @GetMapping(value="/add")
     public Account add(@RequestParam(value="firstName")String firstName,

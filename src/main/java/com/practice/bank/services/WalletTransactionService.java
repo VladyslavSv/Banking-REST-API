@@ -19,7 +19,7 @@ public class WalletTransactionService
 
     public WalletTransaction commitWalletTransaction(Wallet sender,Wallet receiver,BigDecimal sendedSum)
     {
-        if(sender.getAmount().compareTo(sendedSum)>0)
+        if(sender.getAmount().compareTo(sendedSum)>=0)
         {
             //convert sender's currency to receiver's currency
             BigDecimal receivedSum = convert(sendedSum, sender.getCurrency(), receiver.getCurrency());
