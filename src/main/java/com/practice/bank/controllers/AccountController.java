@@ -13,7 +13,8 @@ import java.util.Set;
 
 
 @RestController
-public class UserController
+@RequestMapping(value = "/accounts")
+public class AccountController
 {
     @Autowired
     private AccountService accountService;
