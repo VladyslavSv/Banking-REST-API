@@ -27,7 +27,7 @@ public class WalletTransactionController
 
     @GetMapping(value="/getTransactions")
     @ResponseBody
-    public List<WalletTransaction> getWalletTransactions(@RequestParam(value="walletid")Long walletId)
+    public List<WalletTransaction> getWalletTransactions(@RequestParam(value="walletId")Long walletId)
     {
         Wallet wallet=walletService.getWalletById(walletId);
         List<WalletTransaction> transactions = walletTransactionService.getWalletTransactions(wallet);
@@ -36,15 +36,15 @@ public class WalletTransactionController
 
     @GetMapping(value="/getTransaction")
     @ResponseBody
-    public WalletTransaction getWalletTransaction(@RequestParam(value="transactionid")Long id)
+    public WalletTransaction getWalletTransaction(@RequestParam(value="transactionId")Long id)
     {
         return walletTransactionService.getWalletTransaction(id);
     }
 
     @GetMapping(value="/commit")
     @ResponseBody
-    public void commitTransaction(@RequestParam(value = "senderid")Long senderId,
-                                  @RequestParam(value="receiverid")Long receiverId,
+    public void commitTransaction(@RequestParam(value = "senderId")Long senderId,
+                                  @RequestParam(value="receiverId")Long receiverId,
                                   @RequestParam(value="sum")BigDecimal sum)
     {
         Wallet sender=walletService.getWalletById(senderId);

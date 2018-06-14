@@ -29,14 +29,14 @@ public class ATMTransactionController
     private TransactionTypeService transactionTypeService;
 
     @GetMapping(value = "/commit")
-    public void commitTransaction(@RequestParam(value="walletid")Long walletId,
+    public ATMTransaction commitTransaction(@RequestParam(value="walletId")Long walletId,
                                   @RequestParam(value="sum")BigDecimal sum,
                                   @RequestParam(value="transactionTypeId")Long transactionTypeId )
     {
         TransactionType type=transactionTypeService.getTransactionTypeById(transactionTypeId);
         Wallet wallet=walletService.getWalletById(walletId);
 
-        atmService.commitTransaction(wallet,sum,type);
+        return atmService.commitTransaction(wallet,sum,type);
     }
     @GetMapping(value="/getById")
     public ATMTransaction getTransactionById(@RequestParam(value="transactionId")Long transactionId)

@@ -20,7 +20,7 @@ public class ATMTransactionService
 
     public ATMTransactionService(){}
 
-    public void commitTransaction(Wallet wallet, BigDecimal sum, TransactionType type)
+    public ATMTransaction commitTransaction(Wallet wallet, BigDecimal sum, TransactionType type)
     {
         switch (type.getName())
         {
@@ -28,6 +28,10 @@ public class ATMTransactionService
                 if(wallet.getAmount().compareTo(sum)>0)
                 {
                     wallet.setAmount(wallet.getAmount().remainder(sum));
+                }
+                else
+                {
+                    return null;
                 }
                 break;
             case "Reliff":
@@ -41,6 +45,8 @@ public class ATMTransactionService
         transaction.setWallet(wallet);
 
         atmTransactionRepository.save(transaction);
+
+        return transaction;
     }
 
     public ATMTransaction getAtmTransactionById(Long id)

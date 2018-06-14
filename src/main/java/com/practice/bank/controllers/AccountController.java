@@ -24,20 +24,15 @@ public class AccountController
     @Autowired
     private FirstNameService firstNameService;
 
-    @Autowired
-    private TransactionTypeService transactionTypeService;
     @GetMapping(value="/test")
     public TransactionType test()
     {
-        TransactionType type=new TransactionType("Withdraw");
-        transactionTypeService.addTransactionType(type);
-        transactionTypeService.addTransactionType(new TransactionType("Reliff"));
-        return type;
+        return null;
     }
 
     @GetMapping(value="/add")
-    public Account add(@RequestParam(value="firstname")String firstName,
-                           @RequestParam(value="lastname")String lastName,
+    public Account add(@RequestParam(value="firstName")String firstName,
+                           @RequestParam(value="lastName")String lastName,
                            @RequestParam(value="email")String email,
                            @RequestParam(value="code")String code,
                            @RequestParam(value="login")String login,
@@ -60,8 +55,8 @@ public class AccountController
     }
     @GetMapping(value="/update")
     public Account update(@RequestParam(value="id") Long id,
-                              @RequestParam(value="firstname")String firstName,
-                              @RequestParam(value="lastname")String lastName,
+                              @RequestParam(value="firstName")String firstName,
+                              @RequestParam(value="lastName")String lastName,
                               @RequestParam(value="email")String email,
                               @RequestParam(value="code")String code,
                               @RequestParam(value="login")String login,
