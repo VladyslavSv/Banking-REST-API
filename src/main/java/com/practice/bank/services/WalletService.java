@@ -5,6 +5,8 @@ import com.practice.bank.model.Wallet;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class WalletService
 {
@@ -24,5 +26,9 @@ public class WalletService
     public Wallet getWalletById(Long id)
     {
         return walletRepository.findById(id).get();
+    }
+    public List<Wallet> getWalletsByAccount_Id(Long id)
+    {
+        return walletRepository.getWalletsByAccount_Id(id);
     }
 }

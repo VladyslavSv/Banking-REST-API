@@ -97,6 +97,10 @@ public class Account
         this.password = password;
     }
 
+    public String getFullName()
+    {
+        return firstName.getName()+" "+lastName;
+    }
 
     @Override
     public String toString() {

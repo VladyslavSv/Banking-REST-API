@@ -25,7 +25,7 @@ public class WalletTransactionController
     @Autowired
     private WalletService walletService;
 
-    @GetMapping(value="/getwtransactions")
+    @GetMapping(value="/getTransactions")
     @ResponseBody
     public List<WalletTransaction> getWalletTransactions(@RequestParam(value="walletid")Long walletId)
     {
@@ -34,14 +34,14 @@ public class WalletTransactionController
         return transactions;
     }
 
-    @GetMapping(value="/getwtransaction")
+    @GetMapping(value="/getTransaction")
     @ResponseBody
     public WalletTransaction getWalletTransaction(@RequestParam(value="transactionid")Long id)
     {
         return walletTransactionService.getWalletTransaction(id);
     }
 
-    @GetMapping(value="/commitTransaction")
+    @GetMapping(value="/commit")
     @ResponseBody
     public void commitTransaction(@RequestParam(value = "senderid")Long senderId,
                                   @RequestParam(value="receiverid")Long receiverId,

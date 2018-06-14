@@ -19,7 +19,7 @@ public class CurrencyController
 
     public CurrencyController(){}
 
-    @GetMapping(value="/addCurrency")
+    @GetMapping(value="/add")
     public Currency addCurrency(@RequestParam(value="name")String name, @RequestParam(value="rate")BigDecimal rate)
     {
         Currency currency=new Currency();
@@ -30,13 +30,13 @@ public class CurrencyController
         return currency;
     }
 
-    @GetMapping(value="/removeCurrency")
+    @GetMapping(value="/remove")
     public void removeCurrency(@RequestParam(value="id")Long id)
     {
         currencyService.removeCurrencyById(id);
     }
 
-    @GetMapping(value="/updateCurrency")
+    @GetMapping(value="/update")
     public Currency updateCurrency(@RequestParam(value="id")Long id,BigDecimal rate)
     {
         Currency currency=currencyService.getCurrencyByid(id);
@@ -46,7 +46,7 @@ public class CurrencyController
         return  currency;
     }
 
-    @GetMapping(value="/getCurrency")
+    @GetMapping(value="/get")
     public Currency getCurrencyById(@RequestParam(value="id")Long id)
     {
         return currencyService.getCurrencyByid(id);

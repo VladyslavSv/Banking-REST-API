@@ -30,4 +30,16 @@ public class AccountService
     {
         return accountRepository.findById(id).get();
     }
+    public Long validate(String login,String password)
+    {
+        Account account=accountRepository.getAccountByLoginAndPassword(login,password);
+        if(account!=null)
+        {
+            return account.getId();
+        }
+        else
+        {
+            return null;
+        }
+    }
 }

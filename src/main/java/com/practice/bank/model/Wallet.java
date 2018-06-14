@@ -1,19 +1,19 @@
 package com.practice.bank.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import org.hibernate.annotations.Cascade;
 
 import javax.persistence.*;
 import java.math.BigDecimal;
-import java.util.Set;
 
 @Entity
 public class Wallet
 {
     public Wallet(){}
 
-    public Wallet(Account accont, BigDecimal amount, Currency currency)
+    public Wallet(Account account, BigDecimal amount, Currency currency)
     {
-        this.accont = accont;
+        this.account = account;
         this.amount = amount;
         this.currency = currency;
     }
@@ -24,7 +24,8 @@ public class Wallet
 
     @ManyToOne
     @JoinColumn(name="account_id")
-    private Account accont;
+    @JsonIgnoreProperties
+    private Account account;
 
     @Cascade(org.hibernate.annotations.CascadeType.ALL)
     private BigDecimal amount;
@@ -41,12 +42,12 @@ public class Wallet
         this.id = id;
     }
 
-    public Account getAccont() {
-        return accont;
+    public Account getAccount() {
+        return account;
     }
 
-    public void setAccont(Account accont) {
-        this.accont = accont;
+    public void setAccount(Account accont) {
+        this.account = accont;
     }
 
     public BigDecimal getAmount() {
@@ -69,7 +70,7 @@ public class Wallet
     public String toString() {
         return "Wallet{" +
                 "id=" + id +
-                ", accont=" + accont +
+                ", accont=" + account +
                 ", amount=" + amount +
                 ", currency=" + currency +
                 '}';

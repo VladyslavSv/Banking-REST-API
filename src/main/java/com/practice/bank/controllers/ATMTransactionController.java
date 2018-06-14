@@ -18,7 +18,7 @@ import java.util.List;
 import java.util.Set;
 
 @RestController
-@RequestMapping(value="/atm")
+@RequestMapping(value="/atms")
 public class ATMTransactionController
 {
     @Autowired
@@ -28,7 +28,7 @@ public class ATMTransactionController
     @Autowired
     private TransactionTypeService transactionTypeService;
 
-    @GetMapping(value = "/commitATMTransaction")
+    @GetMapping(value = "/commit")
     public void commitTransaction(@RequestParam(value="walletid")Long walletId,
                                   @RequestParam(value="sum")BigDecimal sum,
                                   @RequestParam(value="transactionTypeId")Long transactionTypeId )
@@ -38,12 +38,12 @@ public class ATMTransactionController
 
         atmService.commitTransaction(wallet,sum,type);
     }
-    @GetMapping(value="/getAtmById")
+    @GetMapping(value="/getById")
     public ATMTransaction getTransactionById(@RequestParam(value="transactionId")Long transactionId)
     {
         return atmService.getAtmTransactionById(transactionId);
     }
-    @GetMapping(value="/getAtmByWalletId")
+    @GetMapping(value="/getByWalletId")
     public List<ATMTransaction> getTransactionsByWalletId(@RequestParam(value="walletId")Long walletId)
     {
         Wallet wallet=walletService.getWalletById(walletId);
