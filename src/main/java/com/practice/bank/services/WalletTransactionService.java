@@ -17,16 +17,16 @@ public class WalletTransactionService
     @Autowired
     WalletTransactionRepository walletTransactionRepository;
 
-    public void commitWalletTransaction(Wallet sender,Wallet receiver,BigDecimal sendedSum)
+    public WalletTransaction commitWalletTransaction(Wallet sender,Wallet receiver,BigDecimal sendedSum)
     {
-        if(sendedSum.compareTo(sender.getAmount())>0)
+        if(sender.getAmount().compareTo(sendedSum)>0)
         {
             //convert sender's currency to receiver's currency
             BigDecimal receivedSum = convert(sendedSum, sender.getCurrency(), receiver.getCurrency());
             //increase receiver's sum
             receiver.setAmount(receiver.getAmount().add(receivedSum));
             //decrease senders sum
-            sender.setAmount(sender.getAmount().remainder(sendedSum));
+            sender.setAmount(sender.getAmount().subtract(sendedSum));
 
             //create wallet transaction
             WalletTransaction walletTransaction=new WalletTransaction();
@@ -37,6 +37,11 @@ public class WalletTransactionService
             walletTransaction.setDate(new Date());
             //save transaction in database
             walletTransactionRepository.save(walletTransaction);
+            return walletTransaction;
+        }
+        else
+        {
+            return null;
         }
     }
     public WalletTransaction getWalletTransaction(Long id)

@@ -43,13 +43,13 @@ public class WalletTransactionController
 
     @GetMapping(value="/commit")
     @ResponseBody
-    public void commitTransaction(@RequestParam(value = "senderId")Long senderId,
+    public WalletTransaction commitTransaction(@RequestParam(value = "senderId")Long senderId,
                                   @RequestParam(value="receiverId")Long receiverId,
                                   @RequestParam(value="sum")BigDecimal sum)
     {
         Wallet sender=walletService.getWalletById(senderId);
         Wallet receiver=walletService.getWalletById(receiverId);
 
-        walletTransactionService.commitWalletTransaction(sender,receiver,sum);
+        return walletTransactionService.commitWalletTransaction(sender,receiver,sum);
     }
 }
