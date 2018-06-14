@@ -24,7 +24,6 @@ public class Wallet
 
     @ManyToOne
     @JoinColumn(name="account_id")
-    @JsonIgnoreProperties
     private Account account;
 
     @Cascade(org.hibernate.annotations.CascadeType.ALL)

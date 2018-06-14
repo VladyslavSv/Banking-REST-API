@@ -1,5 +1,6 @@
 package com.practice.bank.controllers;
 
+import com.practice.bank.services.TransactionTypeService;
 import com.practice.bank.services.Validators.EmailValidator;
 import com.practice.bank.services.Validators.PasswordValidator;
 import com.practice.bank.services.Validators.UsernameValidator;
@@ -23,21 +24,15 @@ public class AccountController
     @Autowired
     private FirstNameService firstNameService;
 
+    @Autowired
+    private TransactionTypeService transactionTypeService;
     @GetMapping(value="/test")
-    public Account test()
+    public TransactionType test()
     {
-        FirstName firstName=new FirstName();
-        firstName.setName("Vladislav");
-
-        firstNameService.addIfNotExists(firstName);
-
-        Account account=new Account();
-        account.setFirstName(firstName);
-        account.setLastName("Sklyarov");
-
-        accountService.addAccount(account);
-
-        return account;
+        TransactionType type=new TransactionType("Withdraw");
+        transactionTypeService.addTransactionType(type);
+        transactionTypeService.addTransactionType(new TransactionType("Reliff"));
+        return type;
     }
 
     @GetMapping(value="/add")
