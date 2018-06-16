@@ -1,5 +1,7 @@
 package com.practice.bank.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
 import javax.persistence.*;
 import java.math.BigDecimal;
 import java.util.Set;
@@ -23,6 +25,7 @@ public class Currency
     private BigDecimal rate;
 
     @OneToMany(mappedBy = "id")
+    @JsonBackReference
     private Set<Wallet> wallets;
 
     public Long getId() {

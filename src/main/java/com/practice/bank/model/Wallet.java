@@ -1,6 +1,7 @@
 package com.practice.bank.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import org.hibernate.annotations.Cascade;
 
 import javax.persistence.*;
@@ -24,6 +25,7 @@ public class Wallet
 
     @ManyToOne
     @JoinColumn(name="account_id")
+    @JsonManagedReference
     private Account account;
 
     @Cascade(org.hibernate.annotations.CascadeType.ALL)
@@ -31,6 +33,7 @@ public class Wallet
 
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name="currency_id")
+    @JsonManagedReference
     private Currency currency;
 
     public Long getId() {

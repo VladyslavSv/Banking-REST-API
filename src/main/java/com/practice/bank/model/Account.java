@@ -1,5 +1,7 @@
 package com.practice.bank.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
 import javax.persistence.*;
 import javax.validation.constraints.Email;
 import java.util.Set;
@@ -39,6 +41,7 @@ public class Account
     private String password;
 
     @OneToMany(mappedBy = "id",cascade = CascadeType.ALL)
+    @JsonBackReference
     private Set<Wallet> wallets;
 
     public Long getId() {
