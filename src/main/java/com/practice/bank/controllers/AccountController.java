@@ -10,10 +10,6 @@ import com.practice.bank.services.FirstNameService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
-import java.util.Set;
-
-
 @RestController
 @RequestMapping(value = "/accounts")
 public class AccountController
@@ -26,18 +22,8 @@ public class AccountController
 
     @Autowired
     private TransactionTypeService transactionTypeService;
-//    @GetMapping(value="/test")
-//    public TransactionType test()
-//    {
-//        TransactionType type1=new TransactionType("Withdraw");
-//        TransactionType type2=new TransactionType("Reliff");
-//
-//        transactionTypeService.addTransactionType(type1);
-//        transactionTypeService.addTransactionType(type2);
-//        return type1;
-//    }
 
-    @GetMapping(value="/add")
+    @PutMapping(value="/add")
     public Account add(@RequestParam(value="firstName")String firstName,
                            @RequestParam(value="lastName")String lastName,
                            @RequestParam(value="email")String email,
@@ -60,7 +46,7 @@ public class AccountController
         }
 
     }
-    @GetMapping(value="/update")
+    @PostMapping(value="/update")
     public Account update(@RequestParam(value="id") Long id,
                               @RequestParam(value="firstName")String firstName,
                               @RequestParam(value="lastName")String lastName,
@@ -91,7 +77,7 @@ public class AccountController
             return null;
         }
     }
-    @GetMapping(value="/remove")
+    @DeleteMapping(value="/remove")
     public void remove(@RequestParam(value="id")Long id)
     {
         accountService.removeAccount(id);

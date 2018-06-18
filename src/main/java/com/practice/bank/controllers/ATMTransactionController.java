@@ -8,10 +8,7 @@ import com.practice.bank.services.ATMTransactionService;
 import com.practice.bank.services.TransactionTypeService;
 import com.practice.bank.services.WalletService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.math.BigDecimal;
 import java.util.List;
@@ -28,7 +25,7 @@ public class ATMTransactionController
     @Autowired
     private TransactionTypeService transactionTypeService;
 
-    @GetMapping(value = "/commit")
+    @PostMapping(value = "/commit")
     public ATMTransaction commitTransaction(@RequestParam(value="walletId")Long walletId,
                                   @RequestParam(value="sum")BigDecimal sum,
                                   @RequestParam(value="transactionTypeId")Long transactionTypeId )
