@@ -17,43 +17,34 @@ public class WalletTransactionService
     @Autowired
     WalletTransactionRepository walletTransactionRepository;
 
-    public WalletTransaction commitWalletTransaction(Wallet sender,Wallet receiver,BigDecimal sendedSum)
-    {
-        if(sender.getAmount().compareTo(sendedSum)>=0)
+    public WalletTransaction commitWalletTransaction(WalletTransaction transaction) {
+        if(transaction.getSender().getAmount().compareTo(transaction.getSumSended())>=0)
         {
             //convert sender's currency to receiver's currency
-            BigDecimal receivedSum = convert(sendedSum, sender.getCurrency(), receiver.getCurrency());
+            BigDecimal receivedSum = convert(transaction.getSumSended(), transaction.getSender().getCurrency(), transaction.getReceiver().getCurrency());
             //increase receiver's sum
-            receiver.setAmount(receiver.getAmount().add(receivedSum));
+            transaction.getReceiver().setAmount(transaction.getReceiver().getAmount().add(receivedSum));
             //decrease senders sum
-            sender.setAmount(sender.getAmount().subtract(sendedSum));
-
-            //create wallet transaction
-            WalletTransaction walletTransaction=new WalletTransaction();
-            walletTransaction.setSumSended(sendedSum);
-            walletTransaction.setSumReceived(receivedSum);
-            walletTransaction.setSender(sender);
-            walletTransaction.setReceiver(receiver);
-            walletTransaction.setDate(new Date());
+            transaction.getSender().setAmount(transaction.getSender().getAmount().subtract(transaction.getSumSended()));
+            //fill fields
+            transaction.setSumReceived(receivedSum);
+            transaction.setDate(new Date());
             //save transaction in database
-            walletTransactionRepository.save(walletTransaction);
-            return walletTransaction;
+            walletTransactionRepository.save(transaction);
+            return transaction;
         }
         else
         {
             return null;
         }
     }
-    public WalletTransaction getWalletTransaction(Long id)
-    {
+    public WalletTransaction getWalletTransaction(Long id) {
         return walletTransactionRepository.findById(id).get();
     }
-    public List<WalletTransaction> getWalletTransactions(Wallet wallet)
-    {
+    public List<WalletTransaction> getWalletTransactions(Wallet wallet) {
         return walletTransactionRepository.findWalletTransactionsByReceiver(wallet);
     }
-    public BigDecimal convert(BigDecimal sumSended, Currency sendingCurrency,Currency receivingCurrency)
-    {
+    public BigDecimal convert(BigDecimal sumSended, Currency sendingCurrency,Currency receivingCurrency) {
         //divide on sender currency rate then multiply on receiver currency rate
         BigDecimal receivedSum = sumSended.divide(sendingCurrency.getRate()).multiply(receivingCurrency.getRate());
         return receivedSum;
