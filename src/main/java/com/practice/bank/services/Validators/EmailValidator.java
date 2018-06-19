@@ -3,12 +3,6 @@ package com.practice.bank.services.Validators;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-/**
- * Java email validation program
- *
- * @author pankaj
- *
- */
 public class EmailValidator {
     // Email Regex java
     private static final String EMAIL_REGEX = "^[\\w-\\+]+(\\.[\\w]+)*@[\\w-]+(\\.[\\w]+)*(\\.[a-z]{2,})$";

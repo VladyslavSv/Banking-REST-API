@@ -1,40 +1,35 @@
 package com.practice.bank.services;
 
 import com.practice.bank.dao.ATMTransactionRepository;
-import com.practice.bank.model.ATMTransaction;
-import com.practice.bank.model.TransactionType;
+import com.practice.bank.model.AtmTransaction;
 import com.practice.bank.model.Wallet;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
-import java.util.Set;
 
 @Service
-public class ATMTransactionService
-{
+public class AtmTransactionService {
+
     @Autowired
     private ATMTransactionRepository atmTransactionRepository;
 
-    public ATMTransactionService(){}
+    public AtmTransactionService(){}
 
-    public ATMTransaction commitTransaction(ATMTransaction transaction) {
-        switch (transaction.getTransactionType().getName())
-        {
+    public AtmTransaction commitTransaction(AtmTransaction transaction) {
+        switch (transaction.getTransactionType().getName()) {
             case "Withdraw":
-                if(transaction.getWallet().getAmount().compareTo(transaction.getSum())>0)
-                {
+                if(transaction.getWallet().getAmount().compareTo(transaction.getSum()) > 0) {
                     transaction.getWallet().setAmount(transaction.getWallet().getAmount().remainder(transaction.getSum()));
-                }
-                else
-                {
+                } else {
                     return null;
                 }
                 break;
             case "Reliff":
                 transaction.getWallet().setAmount(transaction.getWallet().getAmount().add(transaction.getSum()));
+                break;
+            default:
                 break;
         }
 
@@ -45,10 +40,12 @@ public class ATMTransactionService
         return transaction;
     }
 
-    public ATMTransaction getAtmTransactionById(Long id) {
+    public AtmTransaction getAtmTransactionById(Long id) {
         return atmTransactionRepository.findById(id).get();
     }
-    public List<ATMTransaction> getTransactionsByWallet(Wallet wallet) {
+
+    public List<AtmTransaction> getTransactionsByWallet(Wallet wallet) {
         return atmTransactionRepository.findATMTransactionsByWallet(wallet);
     }
+
 }

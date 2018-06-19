@@ -1,35 +1,23 @@
 package com.practice.bank.model;
 
+import lombok.Getter;
+import lombok.NonNull;
+import lombok.Setter;
+
 import javax.persistence.*;
 
 @Entity
-public class TransactionType
-{
-    public TransactionType(){}
-
-    public TransactionType(String name) {
-        this.name = name;
-    }
+public class TransactionType {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Getter
+    @Setter
+    @NonNull
     private Long id;
 
+    @Getter
+    @Setter
+    @NonNull
     private String name;
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
 }

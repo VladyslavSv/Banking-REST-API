@@ -6,27 +6,27 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
-public class TransactionTypeService
-{
+public class TransactionTypeService {
+
     @Autowired
     private TransactionTypeRepository transactionTypeRepository;
 
     public TransactionTypeService(){}
 
-    public void addTransactionType(TransactionType type)
-    {
+    public void addTransactionType(TransactionType type) {
         transactionTypeRepository.save(type);
     }
-    public void removeTransactionTypeById(Long id)
-    {
+
+    public void removeTransactionTypeById(Long id) {
         transactionTypeRepository.deleteById(id);
     }
-    public void updateTransactionType(TransactionType type)
-    {
+
+    public void updateTransactionType(TransactionType type) {
         transactionTypeRepository.save(type);
     }
-    public TransactionType getTransactionTypeById(Long id)
-    {
+
+    public TransactionType getTransactionTypeById(Long id) {
         return transactionTypeRepository.findById(id).get();
     }
+
 }

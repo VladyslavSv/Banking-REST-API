@@ -1,36 +1,24 @@
 package com.practice.bank.model;
 
+import lombok.*;
 
 import javax.persistence.*;
 
 @Entity
-public class FirstName
-{
-    public FirstName(){}
-
-    public FirstName(String name) {
-        this.name = name;
-    }
+@NoArgsConstructor
+@RequiredArgsConstructor
+public class FirstName {
 
     @Id
-    @GeneratedValue(strategy=GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Getter
+    @Setter
+    @NonNull
     private Long id;
 
+    @Getter
+    @Setter
+    @NonNull
     private String name;
 
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
 }

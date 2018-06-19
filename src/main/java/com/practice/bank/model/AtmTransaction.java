@@ -9,7 +9,7 @@ import java.util.Date;
 @Entity
 @NoArgsConstructor
 @RequiredArgsConstructor
-public class WalletTransaction {
+public class AtmTransaction {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -19,32 +19,25 @@ public class WalletTransaction {
     private Long id;
 
     @ManyToOne
-    @JoinColumn(name = "sender_id")
+    @JoinColumn(name = "wallet_id")
     @Getter
     @Setter
     @NonNull
-    private Wallet sender;
+    private Wallet wallet;
+
+    @Getter
+    @Setter
+    @NonNull
+    private BigDecimal sum;
 
     @ManyToOne
-    @JoinColumn(name = "receiver_id")
+    @JoinColumn(name = "transactionType_id")
     @Getter
     @Setter
     @NonNull
-    private Wallet receiver;
+    private TransactionType transactionType;
 
     @Getter
     @Setter
-    @NonNull
     private Date date;
-
-    @Getter
-    @Setter
-    @NonNull
-    private BigDecimal sumSent;
-
-    @Getter
-    @Setter
-    @NonNull
-    private BigDecimal sumReceived;
-
 }
