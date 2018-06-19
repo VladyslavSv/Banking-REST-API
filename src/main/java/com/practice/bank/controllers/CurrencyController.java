@@ -17,35 +17,25 @@ public class CurrencyController
     public CurrencyController(){}
 
     @PutMapping(value="/add")
-    public Currency addCurrency(@RequestParam(value="name")String name, @RequestParam(value="rate")BigDecimal rate)
-    {
-        Currency currency=new Currency();
-        currency.setName(name);
-        currency.setRate(rate);
-
+    public Currency addCurrency(@RequestParam(value="currency")Currency currency) {
         currencyService.addCurrency(currency);
+
         return currency;
     }
 
     @DeleteMapping(value="/remove")
-    public void removeCurrency(@RequestParam(value="id")Long id)
-    {
+    public void removeCurrency(@RequestParam(value="id")Long id) {
         currencyService.removeCurrencyById(id);
     }
 
     @PostMapping(value="/update")
-    public Currency updateCurrency(@RequestParam(value="id")Long id,BigDecimal rate)
-    {
-        Currency currency=currencyService.getCurrencyByid(id);
-        currency.setRate(rate);
-
+    public Currency updateCurrency(@RequestParam(value="currency")Currency currency) {
         currencyService.updateCurrency(currency);
         return  currency;
     }
 
     @GetMapping(value="/get")
-    public Currency getCurrencyById(@RequestParam(value="id")Long id)
-    {
+    public Currency getCurrencyById(@RequestParam(value="id")Long id) {
         return currencyService.getCurrencyByid(id);
     }
 }

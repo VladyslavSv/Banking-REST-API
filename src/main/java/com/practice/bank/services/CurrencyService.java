@@ -13,20 +13,16 @@ public class CurrencyService
 
     public CurrencyService(){}
 
-    public void addCurrency(Currency currency)
-    {
+    public void addCurrency(Currency currency) {
         currencyRepository.save(currency);
     }
-    public void removeCurrencyById(Long id)
-    {
+    public void removeCurrencyById(Long id) {
         currencyRepository.deleteById(id);
     }
-    public void updateCurrency(Currency currency)
-    {
+    public void updateCurrency(Currency currency) {
         currencyRepository.save(currency);
     }
-    public Currency getCurrencyByid(Long id)
-    {
+    public Currency getCurrencyByid(Long id) {
         return currencyRepository.findById(id).get();
     }
 }
