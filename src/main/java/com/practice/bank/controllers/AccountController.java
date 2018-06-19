@@ -24,20 +24,15 @@ public class AccountController
     private TransactionTypeService transactionTypeService;
 
     @PutMapping(value="/add")
-    public Account add(@RequestParam(value="firstName")String firstName,
-                           @RequestParam(value="lastName")String lastName,
-                           @RequestParam(value="email")String email,
-                           @RequestParam(value="code")String code,
-                           @RequestParam(value="login")String login,
-                           @RequestParam(value="password")String password)
+    public Account add(@RequestParam(value="account")Account account)
     {
-        if(validateFields(firstName,lastName,email,code,login,password))
+        if(validateFields(account))
         {
-            FirstName fn=new FirstName(firstName);
+            FirstName fn=new FirstName(account.getFirstName().getName());
             firstNameService.addIfNotExists(fn);
 
-            Account account=new Account(fn,lastName,email,code,login,password);
             accountService.addAccount(account);
+
             return account;
         }
         else
@@ -47,29 +42,14 @@ public class AccountController
 
     }
     @PostMapping(value="/update")
-    public Account update(@RequestParam(value="id") Long id,
-                              @RequestParam(value="firstName")String firstName,
-                              @RequestParam(value="lastName")String lastName,
-                              @RequestParam(value="email")String email,
-                              @RequestParam(value="code")String code,
-                              @RequestParam(value="login")String login,
-                              @RequestParam(value="password")String password)
+    public Account update(@RequestParam(value="account") Account account)
     {
-        Account account= accountService.getAccount(id);
-        if(account!=null&&validateFields(firstName,lastName,email,code,login,password))
+        if(account!=null&&validateFields(account))
         {
-            FirstName fn=new FirstName(firstName);
+            FirstName fn=new FirstName(account.getFirstName().getName());
             firstNameService.addIfNotExists(fn);
 
-            account.setFirstName(fn);
-            account.setLastName(lastName);
-            account.setCode(code);
-            account.setEmail(email);
-            account.setLogin(login);
-            account.setPassword(password);
-
             accountService.editAccount(account);
-
             return account;
         }
         else
@@ -78,51 +58,43 @@ public class AccountController
         }
     }
     @DeleteMapping(value="/remove")
-    public void remove(@RequestParam(value="id")Long id)
-    {
+    public void remove(@RequestParam(value="id")Long id) {
         accountService.removeAccount(id);
     }
 
     @GetMapping(value="/get")
-    public Account get(@RequestParam(value = "id")Long id)
-    {
+    public Account get(@RequestParam(value = "id")Long id) {
         return accountService.getAccount(id);
     }
 
     @GetMapping(value="/getFullName")
-    public String getName(@RequestParam(value="id")Long id)
-    {
+    public String getName(@RequestParam(value="id")Long id) {
         Account account=accountService.getAccount(id);
         return account.getFullName();
     }
     @GetMapping(value="/getFirstName")
-    public String getFirstName(@RequestParam(value="id")Long id)
-    {
+    public String getFirstName(@RequestParam(value="id")Long id) {
         Account account=accountService.getAccount(id);
         return account.getFirstName().getName();
     }
     @GetMapping(value="/getLastName")
-    public String getLastName(@RequestParam(value="id")Long id)
-    {
+    public String getLastName(@RequestParam(value="id")Long id) {
         Account account=accountService.getAccount(id);
         return account.getLastName();
     }
     @GetMapping(value="/getEmail")
-    public String getEmail(@RequestParam(value="id")Long id)
-    {
+    public String getEmail(@RequestParam(value="id")Long id) {
         Account account=accountService.getAccount(id);
         return account.getEmail();
     }
     @GetMapping(value="/getCode")
-    public String getCode(@RequestParam(value="id") Long id)
-    {
+    public String getCode(@RequestParam(value="id") Long id) {
         Account account=accountService.getAccount(id);
         return account.getCode();
     }
     @GetMapping(value="/validate")
     public Long validateUser(@RequestParam(value="login")String login,
-                             @RequestParam(value="password") String password)
-    {
+                             @RequestParam(value="password") String password) {
         Long id=accountService.validate(login, password);
         if(id!=null)
         {
@@ -133,18 +105,18 @@ public class AccountController
              return -1L;
         }
     }
-    private boolean validateFields(String firstName,String lastName,String email,String code,String login,String password) {
+    private boolean validateFields(Account account) {
         try {
-            if (!firstName.chars().allMatch(Character::isLetter) || !lastName.chars().allMatch(Character::isLetter))
+            if (!account.getFirstName().getName().chars().allMatch(Character::isLetter) || !account.getLastName().chars().allMatch(Character::isLetter))
             {
                 throw new Exception();
             }
 
-            Integer.parseInt(code);
+            Integer.parseInt(account.getCode());
 
-            if(!UsernameValidator.validate(login)||
-                    !EmailValidator.validateEmail(email)||
-                    !PasswordValidator.validate(password))
+            if(!UsernameValidator.validate(account.getLogin())||
+                    !EmailValidator.validateEmail(account.getEmail())||
+                    !PasswordValidator.validate(account.getPassword()))
             {
                 throw new Exception();
             }
