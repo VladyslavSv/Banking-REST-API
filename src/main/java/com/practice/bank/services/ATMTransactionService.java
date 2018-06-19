@@ -20,14 +20,13 @@ public class ATMTransactionService
 
     public ATMTransactionService(){}
 
-    public ATMTransaction commitTransaction(Wallet wallet, BigDecimal sum, TransactionType type)
-    {
-        switch (type.getName())
+    public ATMTransaction commitTransaction(ATMTransaction transaction) {
+        switch (transaction.getTransactionType().getName())
         {
             case "Withdraw":
-                if(wallet.getAmount().compareTo(sum)>0)
+                if(transaction.getWallet().getAmount().compareTo(transaction.getSum())>0)
                 {
-                    wallet.setAmount(wallet.getAmount().remainder(sum));
+                    transaction.getWallet().setAmount(transaction.getWallet().getAmount().remainder(transaction.getSum()));
                 }
                 else
                 {
@@ -35,26 +34,21 @@ public class ATMTransactionService
                 }
                 break;
             case "Reliff":
-                wallet.setAmount(wallet.getAmount().add(sum));
+                transaction.getWallet().setAmount(transaction.getWallet().getAmount().add(transaction.getSum()));
                 break;
         }
-        ATMTransaction transaction =new ATMTransaction();
+
         transaction.setDate(new Date());
-        transaction.setSum(sum);
-        transaction.setTransactionType(type);
-        transaction.setWallet(wallet);
 
         atmTransactionRepository.save(transaction);
 
         return transaction;
     }
 
-    public ATMTransaction getAtmTransactionById(Long id)
-    {
+    public ATMTransaction getAtmTransactionById(Long id) {
         return atmTransactionRepository.findById(id).get();
     }
-    public List<ATMTransaction> getTransactionsByWallet(Wallet wallet)
-    {
+    public List<ATMTransaction> getTransactionsByWallet(Wallet wallet) {
         return atmTransactionRepository.findATMTransactionsByWallet(wallet);
     }
 }
