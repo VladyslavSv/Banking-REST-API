@@ -15,20 +15,16 @@ public class WalletService
 
     public WalletService(){}
 
-    public void addWallet(Wallet wallet)
-    {
+    public void addWallet(Wallet wallet) {
         walletRepository.save(wallet);
     }
-    public void removeWalletById(Long id)
-    {
+    public void removeWalletById(Long id) {
         walletRepository.deleteById(id);
     }
-    public Wallet getWalletById(Long id)
-    {
+    public Wallet getWalletById(Long id) {
         return walletRepository.findById(id).get();
     }
-    public List<Wallet> getWalletsByAccount_Id(Long id)
-    {
+    public List<Wallet> getWalletsByAccount_Id(Long id) {
         return walletRepository.getWalletsByAccount_Id(id);
     }
 }

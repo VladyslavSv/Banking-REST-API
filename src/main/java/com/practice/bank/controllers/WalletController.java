@@ -29,8 +29,7 @@ public class WalletController
     public WalletController(){}
     @PutMapping(value="/addWalletToUser")
     public Wallet addWalletToUser(@RequestParam(value="accountId") Long accountId,
-                                @RequestParam(value="currencyId")Long currencyId)
-    {
+                                @RequestParam(value="currencyId")Long currencyId) {
         Currency currency=currencyService.getCurrencyByid(currencyId);
         Account account= accountService.getAccount(accountId);
 
@@ -51,20 +50,17 @@ public class WalletController
     }
 
     @DeleteMapping(value="/remove")
-    public void removeWalletById(@RequestParam(value="id") Long id)
-    {
+    public void removeWalletById(@RequestParam(value="id") Long id) {
         walletService.removeWalletById(id);
     }
 
     @GetMapping(value="/get")
-    public Wallet getWallet(@RequestParam(value="id")Long id)
-    {
+    public Wallet getWallet(@RequestParam(value="id")Long id) {
         return walletService.getWalletById(id);
     }
 
     @GetMapping(value="/getAccountsWallets")
-    public List<Wallet> getUsersWallets(@RequestParam(value = "accountId")Long accountId)
-    {
+    public List<Wallet> getUsersWallets(@RequestParam(value = "accountId")Long accountId) {
         return walletService.getWalletsByAccount_Id(accountId);
     }
 }
