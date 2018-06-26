@@ -14,7 +14,13 @@ public class FirstNameService {
     public FirstNameService() {}
 
     public void addIfNotExists(FirstName firstName) {
-        firstNameRepository.save(firstName);
+        FirstName tempName=firstNameRepository.findFirstNameByName(firstName.getName());
+        if(tempName == null) {
+            firstNameRepository.save(firstName);
+        }
+        else {
+            firstName.setId(tempName.getId());
+        }
     }
 
     public void remove(Long id) {

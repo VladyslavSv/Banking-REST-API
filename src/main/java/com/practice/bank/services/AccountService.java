@@ -5,6 +5,8 @@ import com.practice.bank.model.Account;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Optional;
+
 @Service
 public class AccountService {
 
@@ -18,15 +20,18 @@ public class AccountService {
     }
 
     public void removeAccount(Long id) {
-        accountRepository.deleteById(id);
+            accountRepository.deleteById(id);
     }
 
-    public void editAccount(Account account) {
+    public Account editAccount(Account account) {
         accountRepository.save(account);
+        return account;
     }
 
     public Account getAccount(Long id) {
-        return accountRepository.findById(id).get();
+        Optional<Account> result=accountRepository.findById(id);
+
+        return result.isPresent()?result.get():null;
     }
 
     public Long validate(String login,String password) {

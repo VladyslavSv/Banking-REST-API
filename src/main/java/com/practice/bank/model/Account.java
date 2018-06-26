@@ -60,4 +60,7 @@ public class Account {
     @ToString.Exclude
     private Set<Wallet> wallets;
 
+    public String getFullName() {
+        return firstName.getName()+" "+lastName;
+    }
 }
