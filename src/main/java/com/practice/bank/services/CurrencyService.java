@@ -5,6 +5,8 @@ import com.practice.bank.model.Currency;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Optional;
+
 @Service
 public class CurrencyService {
 
@@ -13,20 +15,28 @@ public class CurrencyService {
 
     public CurrencyService(){}
 
-    public void addCurrency(Currency currency) {
+    public Currency addCurrency(Currency currency) {
         currencyRepository.save(currency);
+        return currency;
     }
 
     public void removeCurrencyById(Long id) {
         currencyRepository.deleteById(id);
     }
 
-    public void updateCurrency(Currency currency) {
+    public Currency updateCurrency(Currency currency) {
         currencyRepository.save(currency);
+
+        return currency;
     }
 
     public Currency getCurrencyByid(Long id) {
-        return currencyRepository.findById(id).get();
+        Optional<Currency> result = currencyRepository.findById(id);
+        if(result.isPresent()){
+            return result.get();
+        } else {
+            return null;
+        }
     }
 
 }

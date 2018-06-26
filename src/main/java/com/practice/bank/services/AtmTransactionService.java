@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class AtmTransactionService {
@@ -41,7 +42,12 @@ public class AtmTransactionService {
     }
 
     public AtmTransaction getAtmTransactionById(Long id) {
-        return atmTransactionRepository.findById(id).get();
+        Optional<AtmTransaction> result=atmTransactionRepository.findById(id);
+        if(result.isPresent()) {
+            return result.get();
+        } else {
+            return null;
+        }
     }
 
     public List<AtmTransaction> getTransactionsByWallet(Wallet wallet) {
