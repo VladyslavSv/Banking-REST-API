@@ -2,6 +2,7 @@ package unit.tests;
 
 import com.practice.bank.Application;
 import com.practice.bank.model.AtmTransaction;
+import com.practice.bank.model.TransactionType;
 import com.practice.bank.model.Wallet;
 import com.practice.bank.services.AtmTransactionService;
 import com.practice.bank.services.TransactionTypeService;
@@ -30,11 +31,15 @@ public class AtmTransactionServiceTest {
 
     @Test
     public void testCommit(){
+
+        Wallet wallet = walletService.getWalletById( 1L );
+        TransactionType type = tService.getTransactionTypeById( 1L );
+
         AtmTransaction transaction = new AtmTransaction();
         transaction.setDate( new Date() );
         transaction.setSum( new BigDecimal( 500 ) );
-        transaction.setTransactionType(tService.getTransactionTypeById( 1L ) );
-        transaction.setWallet(walletService.getWalletById( 2L ) );
+        transaction.setTransactionType( type );
+        transaction.setWallet( wallet );
 
         transaction = atmService.commitTransaction(transaction);
 
@@ -50,11 +55,11 @@ public class AtmTransactionServiceTest {
 
     @Test
     public void testGetTransactionsByWallet(){
-        Wallet wallet = walletService.getWalletById(2L);
+        Wallet wallet = walletService.getWalletById( 1L );
 
-        List<AtmTransaction> atmTransactions = atmService.getTransactionsByWallet(wallet);
+        List<AtmTransaction> atmTransactions = atmService.getTransactionsByWallet( wallet );
 
-        assertNotNull(atmTransactions);
+        assertNotNull( atmTransactions );
     }
 
 }

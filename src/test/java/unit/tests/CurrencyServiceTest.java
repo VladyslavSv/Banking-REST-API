@@ -26,7 +26,7 @@ public class CurrencyServiceTest {
     public void testAddCurrency(){
 
         Currency currency=new Currency();
-        currency.setRate(new BigDecimal(30.2));
+        currency.setRate(new BigDecimal(1.2));
         currency.setName("EUR");
 
         currency = currencyService.addCurrency(currency);
@@ -42,7 +42,7 @@ public class CurrencyServiceTest {
 
         Currency currency=currencyService.getCurrencyByid(3L);
 
-        assertNull(currency);
+        assertNull( currency );
     }
 
     @Test
@@ -63,6 +63,6 @@ public class CurrencyServiceTest {
 
         Currency currency = currencyService.getCurrencyByid( id );
 
-        assertNotNull(currency);
+        assertNotNull( currency );
     }
 }

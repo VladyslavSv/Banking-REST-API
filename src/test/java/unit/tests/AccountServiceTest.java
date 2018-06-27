@@ -48,7 +48,7 @@ public class AccountServiceTest {
         Account account = accountService.getAccount(AccountServiceTest.accountId);
 
         if (account != null) {
-            assertEquals("Id of user ", AccountServiceTest.accountId, account.getId());
+            assertEquals( "Id of user ", AccountServiceTest.accountId, account.getId() );
         }
     }
 
@@ -58,23 +58,23 @@ public class AccountServiceTest {
         Account account = accountService.getAccount(AccountServiceTest.accountId);
 
         if (account != null) {
-           accountService.removeAccount(account.getId());
+           accountService.removeAccount( account.getId() );
         }
 
-        account = accountService.getAccount(AccountServiceTest.accountId);
+        account = accountService.getAccount( AccountServiceTest.accountId );
 
         assertNull(account);
     }
 
     @Test
     public void testEditAccount() {
-        Account account = accountService.getAccount(AccountServiceTest.accountId);
+        Account account = accountService.getAccount( AccountServiceTest.accountId );
 
         String newLastName = "Tester05";
         if(account != null) {
-            account.setLastName(newLastName);
-            account = accountService.editAccount(account);
+            account.setLastName( newLastName );
+            account = accountService.editAccount( account );
         }
-        assertEquals("User last name now ", newLastName, account.getLastName());
+        assertEquals("User last name now ", newLastName, account.getLastName() );
     }
 }

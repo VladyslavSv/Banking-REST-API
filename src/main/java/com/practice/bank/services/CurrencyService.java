@@ -32,6 +32,7 @@ public class CurrencyService {
 
     public Currency getCurrencyByid(Long id) {
         Optional<Currency> result = currencyRepository.findById(id);
+
         if(result.isPresent()){
             return result.get();
         } else {

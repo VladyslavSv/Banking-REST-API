@@ -27,7 +27,7 @@ public class AtmTransactionService {
                     return null;
                 }
                 break;
-            case "Reliff":
+            case "Relief":
                 transaction.getWallet().setAmount(transaction.getWallet().getAmount().add(transaction.getSum()));
                 break;
             default:

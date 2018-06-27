@@ -23,42 +23,42 @@ public class FirstNameServiceTest {
 
     @Test
     public void testAddFirstName() {
-        FirstName firstName = new FirstName("Jason");
+        FirstName firstName = new FirstName( "Jason" );
 
-        firstName = firstNameService.addIfNotExists(firstName);
+        firstName = firstNameService.addIfNotExists( firstName );
 
-        assertNotNull(firstName);
+        assertNotNull( firstName );
     }
 
     @Test
     public void testRemoveFirstName(){
-        Long id = 2L;
+        Long id = 3L;
 
-        firstNameService.remove(id);
+        firstNameService.remove( id );
 
-        FirstName firstName = firstNameService.get(id);
+        FirstName firstName = firstNameService.get( id );
 
-        assertNull(firstName);
+        assertNull( firstName );
     }
 
     @Test
     public void testChangeFirstName(){
         Long id = 1L;
 
-        FirstName firstName = firstNameService.get(id);
-        firstName.setName("Anatoliy");
+        FirstName firstName = firstNameService.get( id );
+        firstName.setName( "Anatoliy" );
 
-        firstName = firstNameService.change(firstName);
+        firstName = firstNameService.change( firstName );
 
-        assertNull(firstName);
+        assertNotNull( firstName );
     }
 
     @Test
     public void testGetFirstName(){
         Long id = 1L;
 
-        FirstName firstName = firstNameService.get(id);
+        FirstName firstName = firstNameService.get( id );
 
-        assertNotNull(firstName);
+        assertNotNull( firstName );
     }
 }

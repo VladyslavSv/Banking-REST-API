@@ -25,22 +25,22 @@ public class TransactionTypeServiceTest {
     public void testAddTransactionType(){
 
         TransactionType type = new TransactionType();
-        type.setName("TestOperation");
+        type.setName( "TestOperation" );
 
-        type = typeService.addTransactionType(type);
+        type = typeService.addTransactionType( type );
 
-        assertNotNull(type);
+        assertNotNull( type );
     }
 
     @Test
     public void testRemoveTransactionType(){
-        Long id = 1L;
+        Long id = 4L;
 
-        TransactionType type = typeService.getTransactionTypeById(id);
+        TransactionType type = typeService.getTransactionTypeById( id );
 
-        typeService.removeTransactionTypeById(id);
+        typeService.removeTransactionTypeById( id );
 
-        type = typeService.getTransactionTypeById(id);
+        type = typeService.getTransactionTypeById( id );
 
         assertNull(type);
     }
@@ -49,20 +49,20 @@ public class TransactionTypeServiceTest {
     public void testUpdateTransactionType(){
         Long id = 2L;
 
-        TransactionType type = typeService.getTransactionTypeById(id);
-        type.setName("SomeType");
+        TransactionType type = typeService.getTransactionTypeById( id );
+        type.setName( "Relief" );
 
-        type = typeService.updateTransactionType(type);
+        type = typeService.updateTransactionType( type );
 
-        assertNotNull(type);
+        assertNotNull( type );
     }
 
     @Test
     public void testGetTransactionType(){
         Long id = 2L;
 
-        TransactionType type = typeService.getTransactionTypeById(id);
+        TransactionType type = typeService.getTransactionTypeById( id );
 
-        assertNotNull(type);
+        assertNotNull( type );
     }
 }

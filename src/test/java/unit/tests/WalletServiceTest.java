@@ -28,33 +28,33 @@ public class WalletServiceTest {
         Wallet wallet = new Wallet();
         wallet.setAmount( new BigDecimal( 1000 ) );
 
-        walletService.addWallet(wallet);
+        walletService.addWallet( wallet );
 
-        assertNotNull(wallet);
+        assertNotNull( wallet );
     }
 
     @Test
     public void testRemoveWallet(){
-        Wallet wallet = walletService.getWalletById(1L);
+        Wallet wallet = walletService.getWalletById( 1L );
 
-        walletService.removeWalletById(wallet.getId());
+        walletService.removeWalletById( wallet.getId() );
 
-        wallet = walletService.getWalletById(1L);
+        wallet = walletService.getWalletById( 1L );
 
-        assertNull(wallet);
+        assertNull( wallet );
     }
 
     @Test
     public void testGetWalletById(){
-        Wallet wallet = walletService.getWalletById(2L);
+        Wallet wallet = walletService.getWalletById( 2L );
 
         assertNotNull(wallet);
     }
 
     @Test
     public void testGetWalletsByAccount_Id(){
-        List<Wallet> wallets = walletService.getWalletsByAccount_Id(1L);
+        List<Wallet> wallets = walletService.getWalletsByAccount_Id( 1L );
 
-        assertNotNull(wallets);
+        assertNotNull( wallets );
     }
 }
