@@ -5,6 +5,9 @@ import com.practice.bank.model.TransactionType;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.swing.text.html.Option;
+import java.util.Optional;
+
 @Service
 public class TransactionTypeService {
 
@@ -13,20 +16,30 @@ public class TransactionTypeService {
 
     public TransactionTypeService(){}
 
-    public void addTransactionType(TransactionType type) {
+    public TransactionType addTransactionType(TransactionType type) {
         transactionTypeRepository.save(type);
+
+        return type;
     }
 
     public void removeTransactionTypeById(Long id) {
         transactionTypeRepository.deleteById(id);
     }
 
-    public void updateTransactionType(TransactionType type) {
+    public TransactionType updateTransactionType(TransactionType type) {
         transactionTypeRepository.save(type);
+
+        return type;
     }
 
     public TransactionType getTransactionTypeById(Long id) {
-        return transactionTypeRepository.findById(id).get();
+        Optional<TransactionType> optional = transactionTypeRepository.findById(id);
+
+        if (optional.isPresent()) {
+            return optional.get();
+        } else {
+            return null;
+        }
     }
 
 }

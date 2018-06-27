@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class WalletService {
@@ -15,8 +16,10 @@ public class WalletService {
 
     public WalletService(){}
 
-    public void addWallet(Wallet wallet) {
+    public Wallet addWallet(Wallet wallet) {
         walletRepository.save(wallet);
+
+        return wallet;
     }
 
     public void removeWalletById(Long id) {
@@ -24,7 +27,13 @@ public class WalletService {
     }
 
     public Wallet getWalletById(Long id) {
-        return walletRepository.findById(id).get();
+        Optional<Wallet> result=walletRepository.findById(id);
+
+        if(result.isPresent()) {
+            return result.get();
+        } else {
+            return null;
+        }
     }
 
     public List<Wallet> getWalletsByAccount_Id(Long id) {

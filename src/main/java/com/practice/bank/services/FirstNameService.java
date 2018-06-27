@@ -5,6 +5,8 @@ import com.practice.bank.model.FirstName;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Optional;
+
 @Service
 public class FirstNameService {
 
@@ -13,26 +15,34 @@ public class FirstNameService {
 
     public FirstNameService() {}
 
-    public void addIfNotExists(FirstName firstName) {
-        FirstName tempName=firstNameRepository.findFirstNameByName(firstName.getName());
+    public FirstName addIfNotExists(FirstName firstName) {
+        FirstName tempName = firstNameRepository.findFirstNameByName(firstName.getName());
         if(tempName == null) {
             firstNameRepository.save(firstName);
-        }
-        else {
+        } else {
             firstName.setId(tempName.getId());
         }
+        return firstName;
     }
 
     public void remove(Long id) {
         firstNameRepository.deleteById(id);
     }
 
-    public void change(FirstName firstName) {
+    public FirstName change(FirstName firstName) {
         firstNameRepository.save(firstName);
+
+        return firstName;
     }
 
     public FirstName get(Long id) {
-        return firstNameRepository.findById(id).get();
+        Optional<FirstName> result = firstNameRepository.findById(id);
+
+        if(result.isPresent()){
+            return result.get();
+        } else {
+            return null;
+        }
     }
 
 }
