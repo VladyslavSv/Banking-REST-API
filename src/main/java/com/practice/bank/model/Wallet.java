@@ -33,7 +33,7 @@ public class Wallet {
     @NonNull
     private BigDecimal amount;
 
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne(cascade = CascadeType.MERGE)
     @JoinColumn(name = "currency_id")
     @JsonManagedReference
     @Getter

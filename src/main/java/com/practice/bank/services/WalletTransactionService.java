@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class WalletTransactionService {
@@ -29,6 +30,7 @@ public class WalletTransactionService {
             transaction.setDate(new Date());
             //save transaction in database
             walletTransactionRepository.save(transaction);
+
             return transaction;
         } else {
             return null;
@@ -36,7 +38,13 @@ public class WalletTransactionService {
     }
 
     public WalletTransaction getWalletTransaction(Long id) {
-        return walletTransactionRepository.findById(id).get();
+        Optional<WalletTransaction> result = walletTransactionRepository.findById(id);
+
+        if(result.isPresent()) {
+            return result.get();
+        } else {
+            return null;
+        }
     }
 
     public List<WalletTransaction> getWalletTransactions(Wallet wallet) {

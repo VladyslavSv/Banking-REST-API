@@ -33,7 +33,8 @@ public class AccountServiceTest {
 
         firstNameService.addIfNotExists(firstName);
 
-        Account account = accountService.addAccount(new Account(firstName,"Tester","tester@gmail.com","10101010","tester098","098tester222"));
+        Account account = accountService.addAccount(
+                new Account(firstName,"Tester","tester@gmail.com","10101010","tester098","098tester222" ) );
 
         AccountServiceTest.accountId = account.getId();
 
