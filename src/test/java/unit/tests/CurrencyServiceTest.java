@@ -1,5 +1,8 @@
 package unit.tests;
 
+import com.fasterxml.jackson.core.JsonGenerationException;
+import com.fasterxml.jackson.databind.JsonMappingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.practice.bank.Application;
 import com.practice.bank.dao.CurrencyRepository;
 import com.practice.bank.model.Currency;
@@ -12,6 +15,8 @@ import org.mockito.Mockito;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
+import java.io.File;
+import java.io.IOException;
 import java.math.BigDecimal;
 import java.util.Optional;
 
@@ -30,20 +35,30 @@ public class CurrencyServiceTest {
 
     @Before
     public void beforeTesting() {
-        currencyService = new CurrencyService();
 
-        Currency currency = new Currency();
-        currency.setName("USD");
-        currency.setRate(new BigDecimal(1.0));
-        currency.setId( -1L );
+        ObjectMapper mapper = new ObjectMapper();
 
-        Optional<Currency> result = Optional.of(currency);
+        try {
+            currencyService = mapper.readValue(
+                    new File(Config.RESOURCE_PATH + "currencyService.json"), CurrencyService.class);
 
-        Mockito
-                .when(repository.findById(CurrencyServiceTest.testingId))
-                .thenReturn(result);
+            Currency currency = mapper.readValue(
+                    new File(Config.RESOURCE_PATH + "currency.json"), Currency.class);
 
-        currencyService.setCurrencyRepository(repository);
+            Optional<Currency> result = Optional.of(currency);
+
+            Mockito
+                    .when(repository.findById(CurrencyServiceTest.testingId))
+                    .thenReturn(result);
+
+            currencyService.setCurrencyRepository(repository);
+        } catch (JsonGenerationException jsonGenerationException) {
+            jsonGenerationException.printStackTrace();
+        } catch (JsonMappingException jsonMappingException) {
+            jsonMappingException.printStackTrace();
+        } catch (IOException io) {
+            io.printStackTrace();
+        }
     }
 
     @Test

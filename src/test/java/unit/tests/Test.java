@@ -4,6 +4,7 @@ import com.fasterxml.jackson.core.JsonGenerationException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.practice.bank.services.AccountService;
+import com.practice.bank.services.CurrencyService;
 
 import java.io.File;
 import java.io.IOException;
@@ -13,10 +14,10 @@ public class Test {
 
         ObjectMapper mapper = new ObjectMapper();
 
-        AccountService service = new AccountService();
+        CurrencyService currencyService = new CurrencyService();
 
         try {
-            mapper.writeValue(new File("src/main/resources/JsonObjects/accountService.json"), service);
+            mapper.writeValue(new File("src/main/resources/JsonObjects/currencyService.json"), currencyService);
         } catch (JsonGenerationException jsonGenerationException){
             jsonGenerationException.printStackTrace();
         } catch (JsonMappingException jsonMappingException) {
