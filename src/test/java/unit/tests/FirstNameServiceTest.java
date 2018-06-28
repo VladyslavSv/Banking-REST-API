@@ -2,13 +2,19 @@ package unit.tests;
 
 
 import com.practice.bank.Application;
+import com.practice.bank.dao.FirstNameRepository;
 import com.practice.bank.model.FirstName;
 import com.practice.bank.services.FirstNameService;
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.mockito.Mock;
+import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
+
+import java.util.Optional;
 
 import static junit.framework.TestCase.assertNull;
 import static org.hibernate.validator.internal.util.Contracts.assertNotNull;
@@ -17,47 +23,49 @@ import static org.hibernate.validator.internal.util.Contracts.assertNotNull;
 @SpringBootTest(classes = Application.class)
 public class FirstNameServiceTest {
 
-    @Autowired
+    private static Long testingId = 1L;
+
+    private FirstName firstName;
+
     private FirstNameService firstNameService;
 
+    @Mock
+    private FirstNameRepository firstNameRepository;
+
+    @Before
+    public void beforeTesting() {
+        firstNameService = new FirstNameService();
+
+        firstName = new FirstName();
+        firstName.setName("John");
+
+        Optional<FirstName> result = Optional.of(firstName);
+
+        Mockito
+                .when( firstNameRepository.findById( FirstNameServiceTest.testingId ) )
+                .thenReturn(result);
+
+        Mockito
+                .when( firstNameRepository.findFirstNameByName( firstName.getName() ) )
+                .thenReturn( firstName );
+
+        Mockito
+                .when( firstNameRepository.save(firstName) )
+                .thenReturn( firstName );
+
+        firstNameService.setFirstNameRepository( firstNameRepository );
+    }
 
     @Test
     public void testAddFirstName() {
-        FirstName firstName = new FirstName( "Jason" );
-
         firstName = firstNameService.addIfNotExists( firstName );
 
         assertNotNull( firstName );
     }
 
     @Test
-    public void testRemoveFirstName(){
-        Long id = 3L;
-
-        firstNameService.remove( id );
-
-        FirstName firstName = firstNameService.get( id );
-
-        assertNull( firstName );
-    }
-
-    @Test
-    public void testChangeFirstName(){
-        Long id = 1L;
-
-        FirstName firstName = firstNameService.get( id );
-        firstName.setName( "Anatoliy" );
-
-        firstName = firstNameService.change( firstName );
-
-        assertNotNull( firstName );
-    }
-
-    @Test
     public void testGetFirstName(){
-        Long id = 1L;
-
-        FirstName firstName = firstNameService.get( id );
+        FirstName firstName = firstNameService.get( FirstNameServiceTest.testingId );
 
         assertNotNull( firstName );
     }

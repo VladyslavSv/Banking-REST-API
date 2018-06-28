@@ -31,7 +31,6 @@ public class FirstNameService {
 
     public FirstName change(FirstName firstName) {
         firstNameRepository.save(firstName);
-
         return firstName;
     }
 
@@ -45,4 +44,11 @@ public class FirstNameService {
         }
     }
 
+    public FirstNameRepository getFirstNameRepository() {
+        return firstNameRepository;
+    }
+
+    public void setFirstNameRepository(FirstNameRepository firstNameRepository) {
+        this.firstNameRepository = firstNameRepository;
+    }
 }
