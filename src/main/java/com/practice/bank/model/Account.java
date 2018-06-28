@@ -1,6 +1,7 @@
 package com.practice.bank.model;
 
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import lombok.*;
 
@@ -63,6 +64,7 @@ public class Account {
     @ToString.Exclude
     private Set<Wallet> wallets;
 
+    @JsonIgnore
     public String getFullName() {
         return firstName.getName() + " " + lastName;
     }
