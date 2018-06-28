@@ -1,0 +1,1 @@
+{"id":-1,"sender":{"id":-1,"account":null,"amount":500,"currency":{"id":-1,"name":"USD","rate":1,"wallets":null}},"receiver":{"id":-3,"account":null,"amount":1000,"currency":{"id":-2,"name":"UAH","rate":25,"wallets":null}},"date":1530212937254,"sumSent":100,"sumReceived":null}

@@ -1,10 +1,14 @@
 package unit.tests;
 
+import com.fasterxml.jackson.core.JsonGenerationException;
+import com.fasterxml.jackson.databind.JsonMappingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.practice.bank.Application;
 import com.practice.bank.dao.WalletTransactionRepository;
 import com.practice.bank.model.Currency;
 import com.practice.bank.model.Wallet;
 import com.practice.bank.model.WalletTransaction;
+import com.practice.bank.services.AccountService;
 import com.practice.bank.services.WalletService;
 import com.practice.bank.services.WalletTransactionService;
 import org.junit.Before;
@@ -15,6 +19,9 @@ import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
+
+import java.io.File;
+import java.io.IOException;
 import java.math.BigDecimal;
 import java.util.Date;
 import java.util.Optional;
@@ -33,57 +40,40 @@ public class WalletTransactionServiceTest {
     private WalletTransaction transaction;
 
     @Mock
-    private WalletService walletService;
-
-    @Mock
     private WalletTransactionRepository repository;
 
     private WalletTransactionService walletTransactionService;
 
     @Before
     public void beforeTesting() {
-        walletTransactionService = new WalletTransactionService();
 
-        Currency currency = new Currency();
-        currency.setRate( new BigDecimal(1.0) );
-        currency.setId( -1L );
-        currency.setName( "USD" );
+        ObjectMapper mapper = new ObjectMapper();
 
-        Wallet testedWallet = new Wallet();
-        testedWallet.setCurrency( currency );
-        testedWallet.setAmount( new BigDecimal(1400) );
-        testedWallet.setId( WalletTransactionServiceTest.testingId );
+        try {
 
-        Wallet newTestedWallet = new Wallet();
-        newTestedWallet.setCurrency( currency );
-        newTestedWallet.setAmount( new BigDecimal(1500) );
-        newTestedWallet.setId( WalletTransactionServiceTest.anotherTestingId );
+            walletTransactionService = mapper.readValue(new File(Config.RESOURCE_PATH + "walletTransactionService.json"), WalletTransactionService.class);
 
-        transaction =  new WalletTransaction();
-        transaction.setDate( new Date() );
-        transaction.setId( -1L );
-        transaction.setSumSent( new BigDecimal(100) );
-        transaction.setSender(testedWallet);
-        transaction.setReceiver(newTestedWallet);
+            transaction = mapper.readValue(new File(Config.RESOURCE_PATH + "walletTransaction.json"), WalletTransaction.class);
 
-        Optional<WalletTransaction> result = Optional.of(transaction);
-        Mockito
-                .when(walletService.getWalletById( WalletTransactionServiceTest.testingId ))
-                .thenReturn(testedWallet);
+            Optional<WalletTransaction> result = Optional.of(transaction);
 
-        Mockito
-                .when(walletService.getWalletById( WalletTransactionServiceTest.anotherTestingId ))
-                .thenReturn(newTestedWallet);
+            Mockito
+                    .when(repository.save(transaction))
+                    .thenReturn(transaction);
 
-        Mockito
-                .when(repository.save(transaction))
-                .thenReturn(transaction);
+            Mockito
+                    .when(repository.findById(WalletTransactionServiceTest.testingId))
+                    .thenReturn(result);
 
-        Mockito
-                .when(repository.findById(WalletTransactionServiceTest.testingId))
-                .thenReturn(result);
+            walletTransactionService.setWalletTransactionRepository(repository);
 
-        walletTransactionService.setWalletTransactionRepository(repository);
+        } catch (JsonGenerationException jsonGenerationException) {
+            jsonGenerationException.printStackTrace();
+        } catch (JsonMappingException jsonMappingException) {
+            jsonMappingException.printStackTrace();
+        } catch (IOException io) {
+            io.printStackTrace();
+        }
     }
 
     @Test
@@ -95,13 +85,16 @@ public class WalletTransactionServiceTest {
 
     @Test
     public void testCommitTransaction() {
-
-        Wallet wallet = walletService.getWalletById( WalletTransactionServiceTest.testingId );
-        Wallet newWallet = walletService.getWalletById( WalletTransactionServiceTest.anotherTestingId );
-
+        
         transaction = walletTransactionService.commitWalletTransaction(transaction);
 
-        assertEquals(1300,wallet.getAmount().intValue());
-        assertEquals(1600,newWallet.getAmount().intValue());
+        Wallet sender = transaction.getSender();
+        Wallet receiver = transaction.getReceiver();
+
+        int senderBalanceAfterSending = 400;
+        int receiverBalanceAfterReceiving = 3500;
+
+        assertEquals( senderBalanceAfterSending, sender.getAmount().intValue() );
+        assertEquals( receiverBalanceAfterReceiving, receiver.getAmount().intValue() );
     }
 }

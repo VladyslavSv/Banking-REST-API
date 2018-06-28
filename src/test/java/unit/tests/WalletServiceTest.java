@@ -1,10 +1,14 @@
 package unit.tests;
 
 
+import com.fasterxml.jackson.core.JsonGenerationException;
+import com.fasterxml.jackson.databind.JsonMappingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.practice.bank.Application;
 import com.practice.bank.dao.WalletRepository;
 import com.practice.bank.model.Currency;
 import com.practice.bank.model.Wallet;
+import com.practice.bank.services.AccountService;
 import com.practice.bank.services.WalletService;
 import org.junit.Before;
 import org.junit.Test;
@@ -16,6 +20,8 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import javax.swing.text.html.Option;
+import java.io.File;
+import java.io.IOException;
 import java.math.BigDecimal;
 import java.util.List;
 import java.util.Optional;
@@ -36,25 +42,27 @@ public class WalletServiceTest {
 
     @Before
     public void beforeTesting() {
-        walletService = new WalletService();
+        ObjectMapper mapper = new ObjectMapper();
 
-        Currency currency = new Currency();
-        currency.setRate(new BigDecimal(1.0));
-        currency.setId( -1L );
-        currency.setName("USD");
+        try {
+            walletService = mapper.readValue(new File(Config.RESOURCE_PATH + "walletService.json"), WalletService.class);
 
-        Wallet wallet = new Wallet();
-        wallet.setCurrency(currency);
-        wallet.setAmount(new BigDecimal(1400));
-        wallet.setId( -1L );
+            Wallet wallet = mapper.readValue(new File(Config.RESOURCE_PATH + "wallet.json"), Wallet.class);
 
-        Optional<Wallet> result = Optional.of(wallet);
+            Optional<Wallet> result = Optional.of(wallet);
 
-        Mockito
-                .when(repository.findById( WalletServiceTest.testingId ))
-                .thenReturn(result);
+            Mockito
+                    .when(repository.findById(WalletServiceTest.testingId))
+                    .thenReturn(result);
 
-        walletService.setWalletRepository(repository);
+            walletService.setWalletRepository(repository);
+        } catch (JsonGenerationException jsonGenerationException) {
+            jsonGenerationException.printStackTrace();
+        } catch (JsonMappingException jsonMappingException) {
+            jsonMappingException.printStackTrace();
+        } catch (IOException io) {
+            io.printStackTrace();
+        }
     }
 
     @Test

@@ -1,9 +1,13 @@
 package unit.tests;
 
 
+import com.fasterxml.jackson.core.JsonGenerationException;
+import com.fasterxml.jackson.databind.JsonMappingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.practice.bank.Application;
 import com.practice.bank.dao.TransactionTypeRepository;
 import com.practice.bank.model.TransactionType;
+import com.practice.bank.services.AccountService;
 import com.practice.bank.services.TransactionTypeService;
 import org.junit.Before;
 import org.junit.Test;
@@ -13,6 +17,8 @@ import org.mockito.Mockito;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.Optional;
 
 import static org.hibernate.validator.internal.util.Contracts.assertNotNull;
@@ -30,19 +36,27 @@ public class TransactionTypeServiceTest {
 
     @Before
     public void beforeTesting() {
-        typeService = new TransactionTypeService();
 
-        TransactionType type = new TransactionType();
-        type.setName("Relief");
-        type.setId( -1L );
+        ObjectMapper mapper = new ObjectMapper();
+        try {
+            typeService = mapper.readValue(new File(Config.RESOURCE_PATH + "typeService.json"), TransactionTypeService.class);
 
-        Optional<TransactionType> result = Optional.of(type);
+            TransactionType type = mapper.readValue(new File(Config.RESOURCE_PATH + "transactionType.json"), TransactionType.class);
 
-        Mockito
-                .when(repository.findById( TransactionTypeServiceTest.testingId ))
-                .thenReturn(result);
+            Optional<TransactionType> result = Optional.of(type);
 
-        typeService.setTransactionTypeRepository(repository);
+            Mockito
+                    .when(repository.findById(TransactionTypeServiceTest.testingId))
+                    .thenReturn(result);
+
+            typeService.setTransactionTypeRepository(repository);
+        } catch (JsonGenerationException jsonGenerationException) {
+            jsonGenerationException.printStackTrace();
+        } catch (JsonMappingException jsonMappingException) {
+            jsonMappingException.printStackTrace();
+        } catch (IOException io) {
+            io.printStackTrace();
+        }
     }
 
     @Test

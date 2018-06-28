@@ -39,12 +39,10 @@ public class WalletTransaction {
 
     @Getter
     @Setter
-    @NonNull
     private BigDecimal sumSent;
 
     @Getter
     @Setter
-    @NonNull
     private BigDecimal sumReceived;
 
 }
