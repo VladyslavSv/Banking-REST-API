@@ -1,10 +1,15 @@
 package unit.tests;
 
 
+import com.fasterxml.jackson.core.JsonGenerationException;
+import com.fasterxml.jackson.databind.JsonMappingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.practice.bank.Application;
 import com.practice.bank.dao.FirstNameRepository;
 import com.practice.bank.model.FirstName;
+import com.practice.bank.services.AccountService;
 import com.practice.bank.services.FirstNameService;
+import org.hibernate.boot.jaxb.hbm.spi.JaxbHbmOuterJoinEnum;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -14,6 +19,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.Optional;
 
 import static junit.framework.TestCase.assertNull;
@@ -34,26 +41,32 @@ public class FirstNameServiceTest {
 
     @Before
     public void beforeTesting() {
-        firstNameService = new FirstNameService();
 
-        firstName = new FirstName();
-        firstName.setName("John");
+        ObjectMapper mapper = new ObjectMapper();
 
-        Optional<FirstName> result = Optional.of(firstName);
+        try {
+            firstNameService = mapper.readValue(new File(Config.RESOURCE_PATH + "firstNameService.json"), FirstNameService.class);
 
-        Mockito
-                .when( firstNameRepository.findById( FirstNameServiceTest.testingId ) )
-                .thenReturn(result);
+            firstName = mapper.readValue(new File(Config.RESOURCE_PATH + "firstName.json"), FirstName.class);
 
-        Mockito
-                .when( firstNameRepository.findFirstNameByName( firstName.getName() ) )
-                .thenReturn( firstName );
+            Optional<FirstName> result = Optional.of(firstName);
 
-        Mockito
-                .when( firstNameRepository.save(firstName) )
-                .thenReturn( firstName );
+            Mockito
+                    .when(firstNameRepository.findById(FirstNameServiceTest.testingId))
+                    .thenReturn(result);
 
-        firstNameService.setFirstNameRepository( firstNameRepository );
+            Mockito
+                    .when(firstNameRepository.save(firstName))
+                    .thenReturn(firstName);
+
+            firstNameService.setFirstNameRepository(firstNameRepository);
+        } catch (JsonGenerationException jsonGenerationException) {
+            jsonGenerationException.printStackTrace();
+        } catch (JsonMappingException jsonMappingException) {
+            jsonMappingException.printStackTrace();
+        } catch (IOException io) {
+            io.printStackTrace();
+        }
     }
 
     @Test
