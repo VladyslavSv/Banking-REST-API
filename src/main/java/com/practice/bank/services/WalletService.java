@@ -16,28 +16,35 @@ public class WalletService {
 
     public WalletService(){}
 
-    public Wallet addWallet(Wallet wallet) {
-        walletRepository.save(wallet);
+    public Wallet addWallet( Wallet wallet ) {
+        walletRepository.save( wallet );
 
         return wallet;
     }
 
-    public void removeWalletById(Long id) {
+    public void removeWalletById( Long id ) {
         walletRepository.deleteById(id);
     }
 
-    public Wallet getWalletById(Long id) {
-        Optional<Wallet> result=walletRepository.findById(id);
+    public Wallet getWalletById( Long id ) {
+        Optional<Wallet> result = walletRepository.findById( id );
 
-        if(result.isPresent()) {
+        if (result.isPresent()) {
             return result.get();
         } else {
             return null;
         }
     }
 
-    public List<Wallet> getWalletsByAccount_Id(Long id) {
-        return walletRepository.getWalletsByAccount_Id(id);
+    public List<Wallet> getWalletsByAccount_Id( Long id ) {
+        return walletRepository.getWalletsByAccount_Id( id );
     }
 
+    public WalletRepository getWalletRepository() {
+        return walletRepository;
+    }
+
+    public void setWalletRepository(WalletRepository walletRepository) {
+        this.walletRepository = walletRepository;
+    }
 }
