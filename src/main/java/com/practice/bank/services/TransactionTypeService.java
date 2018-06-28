@@ -42,4 +42,11 @@ public class TransactionTypeService {
         }
     }
 
+    public TransactionTypeRepository getTransactionTypeRepository() {
+        return transactionTypeRepository;
+    }
+
+    public void setTransactionTypeRepository(TransactionTypeRepository transactionTypeRepository) {
+        this.transactionTypeRepository = transactionTypeRepository;
+    }
 }

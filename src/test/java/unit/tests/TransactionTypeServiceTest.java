@@ -2,67 +2,53 @@ package unit.tests;
 
 
 import com.practice.bank.Application;
+import com.practice.bank.dao.TransactionTypeRepository;
 import com.practice.bank.model.TransactionType;
 import com.practice.bank.services.TransactionTypeService;
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.mockito.Mock;
+import org.mockito.Mockito;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
-import static junit.framework.TestCase.assertNull;
+import java.util.Optional;
+
 import static org.hibernate.validator.internal.util.Contracts.assertNotNull;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = Application.class)
 public class TransactionTypeServiceTest {
 
+    private static Long testingId = 1L;
 
-    @Autowired
     private TransactionTypeService typeService;
 
-    @Test
-    public void testAddTransactionType(){
+    @Mock
+    private TransactionTypeRepository repository;
+
+    @Before
+    public void beforeTesting() {
+        typeService = new TransactionTypeService();
 
         TransactionType type = new TransactionType();
-        type.setName( "TestOperation" );
+        type.setName("Relief");
+        type.setId( -1L );
 
-        type = typeService.addTransactionType( type );
+        Optional<TransactionType> result = Optional.of(type);
 
-        assertNotNull( type );
-    }
+        Mockito
+                .when(repository.findById( TransactionTypeServiceTest.testingId ))
+                .thenReturn(result);
 
-    @Test
-    public void testRemoveTransactionType(){
-        Long id = 4L;
-
-        TransactionType type = typeService.getTransactionTypeById( id );
-
-        typeService.removeTransactionTypeById( id );
-
-        type = typeService.getTransactionTypeById( id );
-
-        assertNull(type);
-    }
-
-    @Test
-    public void testUpdateTransactionType(){
-        Long id = 2L;
-
-        TransactionType type = typeService.getTransactionTypeById( id );
-        type.setName( "Relief" );
-
-        type = typeService.updateTransactionType( type );
-
-        assertNotNull( type );
+        typeService.setTransactionTypeRepository(repository);
     }
 
     @Test
     public void testGetTransactionType(){
-        Long id = 2L;
+        TransactionType innerType = typeService.getTransactionTypeById( TransactionTypeServiceTest.testingId );
 
-        TransactionType type = typeService.getTransactionTypeById( id );
-
-        assertNotNull( type );
+        assertNotNull( innerType );
     }
 }
