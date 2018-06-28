@@ -28,9 +28,6 @@ public class WalletTransactionServiceTest {
     @Autowired
     private WalletService walletService;
 
-
-    @Autowired
-    private CurrencyService currencyService;
     @Test
     public void testGetWalletTransaction() {
 

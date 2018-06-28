@@ -1,22 +1,26 @@
-package com.practice.bank.services;
+package unit.tests.services;
 
 import com.practice.bank.dao.AccountRepository;
 import com.practice.bank.model.Account;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.practice.bank.model.FirstName;
+import org.mockito.Mock;
+import org.mockito.Mockito;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
 
+import static org.mockito.Mockito.when;
+
 @Service
 public class AccountService {
 
-    @Autowired
-    AccountRepository accountRepository;
+    @Mock
+    private AccountRepository accountRepository;
 
     public AccountService(){}
 
-    public Account addAccount(Account account) {
-        return accountRepository.save(account);
+    public void addAccount(Account account) {
+        accountRepository.save(account);
     }
 
     public void removeAccount(Long id) {
@@ -29,13 +33,20 @@ public class AccountService {
     }
 
     public Account getAccount(Long id) {
-        Optional<Account> result=accountRepository.findById(id);
+
+        Account account = new Account(new FirstName( "John" ),"Doe",
+                "johndoe@gmail.com", "1010101010", "JohnDoe076", "p098John" );
+
+        Optional<Account> result = Optional.of(account);
+
+        when(accountRepository.findById(1L)).thenReturn(result);
 
         return result.isPresent()?result.get():null;
     }
 
-    public Long validate(String login,String password) {
+    public Long validate(String login, String password) {
         Account account = accountRepository.getAccountByLoginAndPassword(login,password);
+
         if(account != null) {
             return account.getId();
         } else {
