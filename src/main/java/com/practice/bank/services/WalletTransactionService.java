@@ -51,10 +51,17 @@ public class WalletTransactionService {
         return walletTransactionRepository.findWalletTransactionsByReceiver(wallet);
     }
 
-    public BigDecimal convert(BigDecimal sumSended, Currency sendingCurrency,Currency receivingCurrency) {
+    private BigDecimal convert(BigDecimal sumSended, Currency sendingCurrency,Currency receivingCurrency) {
         //divide on sender currency rate then multiply on receiver currency rate
         BigDecimal receivedSum = sumSended.divide(sendingCurrency.getRate()).multiply(receivingCurrency.getRate());
         return receivedSum;
     }
 
+    public WalletTransactionRepository getWalletTransactionRepository() {
+        return walletTransactionRepository;
+    }
+
+    public void setWalletTransactionRepository(WalletTransactionRepository walletTransactionRepository) {
+        this.walletTransactionRepository = walletTransactionRepository;
+    }
 }
