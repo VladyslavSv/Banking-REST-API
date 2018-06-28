@@ -42,16 +42,25 @@ public class AtmTransactionService {
     }
 
     public AtmTransaction getAtmTransactionById(Long id) {
-        Optional<AtmTransaction> result=atmTransactionRepository.findById(id);
-        if(result.isPresent()) {
+        Optional<AtmTransaction> result = atmTransactionRepository.findById( id );
+
+        if( result.isPresent() ) {
             return result.get();
         } else {
             return null;
         }
     }
 
-    public List<AtmTransaction> getTransactionsByWallet(Wallet wallet) {
-        return atmTransactionRepository.findATMTransactionsByWallet(wallet);
+    public List<AtmTransaction> getTransactionsByWallet( Wallet wallet ) {
+        return atmTransactionRepository.findATMTransactionsByWallet( wallet );
+    }
+
+    public ATMTransactionRepository getAtmTransactionRepository() {
+        return atmTransactionRepository;
+    }
+
+    public void setAtmTransactionRepository( ATMTransactionRepository atmTransactionRepository ) {
+        this.atmTransactionRepository = atmTransactionRepository;
     }
 
 }

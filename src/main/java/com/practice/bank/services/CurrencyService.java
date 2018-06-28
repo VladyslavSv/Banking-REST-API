@@ -40,4 +40,11 @@ public class CurrencyService {
         }
     }
 
+    public CurrencyRepository getCurrencyRepository() {
+        return currencyRepository;
+    }
+
+    public void setCurrencyRepository(CurrencyRepository currencyRepository) {
+        this.currencyRepository = currencyRepository;
+    }
 }

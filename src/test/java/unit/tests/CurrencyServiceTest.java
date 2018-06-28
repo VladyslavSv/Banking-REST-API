@@ -1,57 +1,54 @@
 package unit.tests;
 
 import com.practice.bank.Application;
+import com.practice.bank.dao.CurrencyRepository;
 import com.practice.bank.model.Currency;
+import com.practice.bank.services.CurrencyService;
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.mockito.Mock;
+import org.mockito.Mockito;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
-import unit.tests.services.CurrencyService;
 
 import java.math.BigDecimal;
+import java.util.Optional;
 
 import static junit.framework.TestCase.assertNotNull;
-import static junit.framework.TestCase.assertNull;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = Application.class)
 public class CurrencyServiceTest {
 
+    private static Long testingId = 1L;
+
     private CurrencyService currencyService;
 
-    @Test
-    public void testAddCurrency() {
+    @Mock
+    private CurrencyRepository repository;
+
+    @Before
+    public void beforeTesting() {
+        currencyService = new CurrencyService();
+
         Currency currency = new Currency();
-        currency.setRate( new BigDecimal(1.2) );
-        currency.setName("EUR");
+        currency.setName("USD");
+        currency.setRate(new BigDecimal(1.0));
+        currency.setId( -1L );
 
-        currency = currencyService.addCurrency( currency );
+        Optional<Currency> result = Optional.of(currency);
 
-        assertNotNull(currency);
-    }
+        Mockito
+                .when(repository.findById(CurrencyServiceTest.testingId))
+                .thenReturn(result);
 
-    @Test
-    public void testRemoveCurrencyById() {
-        //currencyService.removeCurrencyById( id );
-    }
-
-    @Test
-    public void testEditCurrency() {
-        Long id = 2L;
-
-        Currency currency = currencyService.getCurrencyByid( id );
-        currency.setRate( new BigDecimal(22.8) );
-
-        currency = currencyService.updateCurrency( currency );
-
-        assertNotNull( currency );
+        currencyService.setCurrencyRepository(repository);
     }
 
     @Test
     public void testGetCurrency() {
-        Long id = 1L;
-
-        Currency currency = currencyService.getCurrencyByid( id );
+        Currency currency = currencyService.getCurrencyByid( CurrencyServiceTest.testingId );
 
         assertNotNull( currency );
     }
