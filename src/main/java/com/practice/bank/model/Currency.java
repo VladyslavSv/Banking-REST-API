@@ -1,6 +1,9 @@
 package com.practice.bank.model;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import lombok.*;
 
 import javax.persistence.*;
@@ -11,6 +14,9 @@ import java.util.Set;
 @NoArgsConstructor
 @RequiredArgsConstructor
 @ToString(exclude = "id")
+@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class,
+        property  = "id",
+        scope     = Long.class)
 public class Currency {
 
     @Id
@@ -30,7 +36,6 @@ public class Currency {
     private BigDecimal rate;
 
     @OneToMany(mappedBy = "id")
-    @JsonBackReference
     @Getter
     @Setter
     private Set<Wallet> wallets;

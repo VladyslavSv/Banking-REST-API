@@ -1,6 +1,5 @@
 package com.practice.bank.model;
 
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.*;
 import org.hibernate.annotations.Cascade;
 import javax.persistence.*;
@@ -16,15 +15,12 @@ public class Wallet {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Getter
     @Setter
-    @NonNull
     private Long id;
 
     @ManyToOne
     @JoinColumn(name = "account_id")
-    @JsonManagedReference
     @Getter
     @Setter
-    @NonNull
     private Account account;
 
     @Cascade(org.hibernate.annotations.CascadeType.ALL)
@@ -33,9 +29,8 @@ public class Wallet {
     @NonNull
     private BigDecimal amount;
 
-    @ManyToOne(cascade = CascadeType.MERGE)
+    @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "currency_id")
-    @JsonManagedReference
     @Getter
     @Setter
     @NonNull

@@ -1,6 +1,7 @@
 package com.practice.bank.model;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import lombok.*;
 
 import javax.persistence.*;
@@ -11,6 +12,9 @@ import java.util.Set;
 @RequiredArgsConstructor
 @NoArgsConstructor
 @ToString
+@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class,
+        property  = "id",
+        scope     = Long.class)
 public class Account {
 
     @Id
@@ -54,13 +58,12 @@ public class Account {
     private String password;
 
     @OneToMany(mappedBy = "id",cascade = CascadeType.ALL)
-    @JsonBackReference
     @Getter
     @Setter
     @ToString.Exclude
     private Set<Wallet> wallets;
 
     public String getFullName() {
-        return firstName.getName()+" "+lastName;
+        return firstName.getName() + " " + lastName;
     }
 }

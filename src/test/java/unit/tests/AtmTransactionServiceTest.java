@@ -1,111 +1,83 @@
 package unit.tests;
 
+import com.fasterxml.jackson.core.JsonGenerationException;
+import com.fasterxml.jackson.databind.JsonMappingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.practice.bank.Application;
 import com.practice.bank.dao.ATMTransactionRepository;
-import com.practice.bank.dao.TransactionTypeRepository;
 import com.practice.bank.model.AtmTransaction;
-import com.practice.bank.model.Currency;
-import com.practice.bank.model.TransactionType;
 import com.practice.bank.model.Wallet;
 import com.practice.bank.services.AtmTransactionService;
-import com.practice.bank.services.TransactionTypeService;
-import com.practice.bank.services.WalletService;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.Mockito;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
-import java.math.BigDecimal;
-import java.util.Date;
-import java.util.List;
+import java.io.File;
+import java.io.IOException;
 import java.util.Optional;
 
 import static junit.framework.TestCase.assertEquals;
 import static junit.framework.TestCase.assertNotNull;
-import static org.mockito.Mockito.doNothing;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = Application.class)
 public class AtmTransactionServiceTest {
 
-    private static Long testingId = 1L;
+    private Long testingId = 1L;
 
     private AtmTransaction transaction;
 
     private AtmTransactionService atmService;
 
     @Mock
-    private TransactionTypeService tService;
-
-    @Mock
-    private WalletService walletService;
-
-    @Mock
     private ATMTransactionRepository atmTransactionRepository;
 
     @Before
     public void beforeTesting() {
-        atmService = new AtmTransactionService();
+        ObjectMapper mapper = new ObjectMapper();
 
-        Currency currency = new Currency();
-        currency.setRate( new BigDecimal(1.0) );
-        currency.setName( "USD" );
-        currency.setId( -1L );
+        try {
+            atmService = mapper.readValue(new File(Config.RESOURCE_PATH + "atmService.json"), AtmTransactionService.class);
 
-        Wallet wallet = new Wallet();
-        wallet.setAmount( new BigDecimal(500) );
-        wallet.setCurrency( currency );
-        wallet.setId( -1L );
+            transaction = mapper.readValue(new File(Config.RESOURCE_PATH + "atmTransaction.json"), AtmTransaction.class);
 
-        TransactionType type = new TransactionType();
-        type.setName( "Relief" );
-        type.setId( -1L );
+            Optional<AtmTransaction> result = Optional.of(transaction);
 
-        transaction = new AtmTransaction();
-        transaction.setSum( new BigDecimal(50) );
-        transaction.setDate( new Date() );
-        transaction.setWallet( wallet );
-        transaction.setTransactionType( type );
-        transaction.setId( -1L );
+            Mockito
+                    .when(atmTransactionRepository.findById(testingId))
+                    .thenReturn(result);
 
-        Optional<AtmTransaction> result = Optional.of( transaction );
+            Mockito
+                    .when(atmTransactionRepository.save(transaction))
+                    .thenReturn(transaction);
 
-        Mockito
-                .when( walletService.getWalletById( AtmTransactionServiceTest.testingId ) )
-                .thenReturn(wallet);
+            atmService.setAtmTransactionRepository(atmTransactionRepository);
 
-        Mockito
-                .when( tService.getTransactionTypeById( AtmTransactionServiceTest.testingId ) )
-                .thenReturn(type);
-
-        Mockito
-                .when(atmTransactionRepository.findById( AtmTransactionServiceTest.testingId ))
-                .thenReturn(result);
-
-        Mockito
-                .when(atmTransactionRepository.save(transaction))
-                .thenReturn(transaction);
-
-        atmService.setAtmTransactionRepository(atmTransactionRepository);
+        } catch (JsonGenerationException jsonGenerationException) {
+            jsonGenerationException.printStackTrace();
+        } catch (JsonMappingException jsonMappingException) {
+            jsonMappingException.printStackTrace();
+        } catch (IOException io) {
+            io.printStackTrace();
+        }
     }
     @Test
     public void testCommit() {
+        Wallet wallet = transaction.getWallet();
 
-        Wallet wallet = walletService.getWalletById( AtmTransactionServiceTest.testingId );
-        TransactionType type = tService.getTransactionTypeById( AtmTransactionServiceTest.testingId );
+        int testingBalance = 550;
 
         transaction = atmService.commitTransaction(transaction);
 
-        assertEquals(550,wallet.getAmount().intValue());
-        assertEquals(50,transaction.getSum().intValue());
+        assertEquals( testingBalance, wallet.getAmount().intValue() );
     }
 
     @Test
     public void testGetAtmTransactionById() {
-        AtmTransaction transaction = atmService.getAtmTransactionById( AtmTransactionServiceTest.testingId );
+        AtmTransaction transaction = atmService.getAtmTransactionById( testingId );
 
         assertNotNull( transaction );
     }
